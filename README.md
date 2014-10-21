@@ -10,6 +10,6 @@ $ booktoemail.sh URL EMAIL_ADDRESS
 For example:
 
 ```bash
-$ ./booktoemail.sh http://www.gutenberg.org/files/2591/2591.txt orjan@hoyd.net
+$ ./booktoemail.sh http://www.gutenberg.org/files/2591/2591.txt user@host.com
 ```
 )
