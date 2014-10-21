@@ -15,7 +15,7 @@ wget -O book $1
 
 # setting some variables
 AUTHOR=$(grep "Author:" book | sed 's/Author: //g')
-TITLE=$(grep "Title:" book | sed 's/Title: //g' | 's/^M//g')
+TITLE=$(grep "Title:" book | sed 's/Title: //g' | sed 's/^M//g')
 
 FOLDER=$(echo $TITLE | sed 's/ /_/g')
 
