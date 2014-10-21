@@ -14,10 +14,10 @@
 wget -O book $1
 
 # setting some variables
-AUTHOR=$(grep "Author:" book | sed 's/Author: //g')
-TITLE=$(grep "Title:" book | sed 's/Title: //g' | sed 's/^M//g')
+AUTHOR=$(grep "Author:" book | sed 's/Author: //g' | strings)
+TITLE=$(grep "Title:" book | sed 's/Title: //g' | strings)
 
-FOLDER=$(echo $TITLE | sed 's/ /_/g')
+FOLDER=$(echo $TITLE-by-$AUTHOR | sed 's/ /_/g')
 
 # run it through findhaikus program
 findhaikus book > haikus
