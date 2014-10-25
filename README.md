@@ -4,16 +4,15 @@ booktoemail.sh is a bash utility to download the ascii version of a book and fin
 ```bash
 $ ./booktoemail.sh http://www.gutenberg.org/files/2591/2591.txt user@host.com
 ```
-)
 
 ## booktoblog
-booktoblog is a bash utility like that blogs the haikus found to a blogger blog using the googlecl tool
+booktoblog is a bash utility like that blogs the haikus found to a blogger blog using the googlecl tool. It also uses the findhaikus utility as the booktoemail.sh script does.
 
 ```bash
 $ booktoblog.sh filename
 ```
 
-### Crontab
+#### Crontab
 Make your script run daily with crontab
 
 ```bash
