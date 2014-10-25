@@ -15,8 +15,6 @@ _file="$1"
 
 if [ -s "$_file" ]
 then
-    echo "$_file has some data."
-
     # Get the top book id
     _id=$(head -1 $_file)
 
@@ -26,22 +24,37 @@ then
     # setting some variables
     AUTHOR=$(grep "Author:" book | sed 's/Author: //g' | strings)
     TITLE=$(grep "Title:" book | sed 's/Title: //g' | strings)
-
+    echo $TITLE
     FOLDER=$(echo $TITLE-by-$AUTHOR | sed 's/ /_/g')
 
+    # find cover from goodreads, using a python script
+    IMAGE_URL=$(python goodreads-lookup.py "$TITLE by $AUTHOR" > image_url)
+	echo "cover downloaded based on title only"
+
     # run it through findhaikus program
+    touch haikus
     findhaikus book > haikus
 
-    # replace () in haikus file with empty lines
-    sed -i 's/()//g' haikus
+	# if any haikus found, blog it. If not, do nothing.
+    if [ -s haikus ]
+    then    
+		# replace () in haikus file with empty lines
+		sed -i 's/()//g' haikus
 
-    # blog the haikus to blogger
-    google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
+		# insert image into blogentry
+		echo "<img src='$(cat image_url)' align='right'>" | cat - haikus > temp && mv temp haikus
 
-    # remove book id from file, create folder for book and move away all files
-    mkdir $FOLDER
-    mv -t $FOLDER book haikus
-    sed -i '1d' $_file
+		# blog the haikus to blogger
+		google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
+
+		# remove book id from file, create folder for book and move away all files
+		mkdir $FOLDER
+		mv -t $FOLDER book haikus image_url
+		sed -i '1d' $_file
+	else
+		echo "no haikus found"
+		exit 1
+	fi
 
 else
     echo "$_file is empty."
