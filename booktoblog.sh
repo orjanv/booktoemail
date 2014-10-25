@@ -17,9 +17,8 @@ if [ -s "$_file" ]
 then
     echo "$_file has some data."
 
-    # Get the top book id and remove it from the list
+    # Get the top book id
     _id=$(head -1 $_file)
-    sed -i '1d' $_file
 
     # download the book based on the book ID number given as args, for ex: 2591
     wget -O book http://www.gutenberg.org/files/$_id/$_id.txt
@@ -39,9 +38,10 @@ then
     # blog the haikus to blogger
     google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
 
-    # create folder for book and move away all files
+    # remove book id from file, create folder for book and move away all files
     mkdir $FOLDER
     mv -t $FOLDER book haikus
+    sed -i '1d' $_file
 
 else
     echo "$_file is empty."
