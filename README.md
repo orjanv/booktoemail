@@ -1,15 +1,15 @@
 ## booktoemail
-booktoemail.sh is a bash utility to download the ascii version of a book and find haikus in it using the [findhaikus](https://github.com/jdf/haikufinder "findhaikus") program. The script takes 2 arguments
+booktoemail.sh is a bash utility to download the ascii version of a book and find haikus in it using the [findhaikus](https://github.com/jdf/haikufinder "findhaikus") program. The script takes 2 arguments:
 
 ```bash
 $ ./booktoemail.sh http://www.gutenberg.org/files/2591/2591.txt user@host.com
 ```
 
 ## booktoblog
-booktoblog is a bash utility like that blogs the haikus found to a blogger blog using the googlecl tool. It also uses the findhaikus utility as the booktoemail.sh script does.
+booktoblog is a bash utility like that blogs the haikus found to a blogger blog using the googlecl tool. It also uses the findhaikus utility as the booktoemail.sh script does. The script takes one argument:
 
 ```bash
-$ booktoblog.sh filename
+$ booktoblog.sh samplenumbers.txt
 ```
 
 #### Crontab
@@ -24,6 +24,6 @@ Add a line as follows
 ```bash
 # 
 # m h  dom mon dow   command
-0 7 * * * cd /path/to/your/script; ./booktoblog.sh filename
+0 7 * * * cd /path/to/your/script; ./booktoblog.sh samplenumbers.txt
 ```
 
