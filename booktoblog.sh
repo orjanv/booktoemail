@@ -32,6 +32,7 @@ then
 	python getthumbdesc.py $TITLE $AUTHOR > thumb_desc
 	head -1 thumb_desc > image_url
 	sed -n '2,$p' <thumb_desc > description
+	rm thumb_desc
 
 	# run it through findhaikus program
 	/usr/local/bin/findhaikus book > haikus
