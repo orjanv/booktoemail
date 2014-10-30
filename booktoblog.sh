@@ -61,7 +61,7 @@ then
 	fi
 	# remove book id from file, create folder for book and move away all files
 	mkdir $FOLDER
-	mv -t $FOLDER book haikus image_url
+	mv -t $FOLDER book haikus image_url description
 	sed -i '1d' $_file
 	exit 1
 else
