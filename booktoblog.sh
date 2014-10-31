@@ -45,7 +45,7 @@ then
  		sed -i 's/()//g' haikus
 
 		# insert image into blogentry
-		echo "<img src='$(cat image_url)' align='right'><p><b>About the book:</b></p><p>$(cat description)</p>" | cat - haikus > temp && mv temp haikus
+		echo "<img src='$(cat image_url)' align='right'><p><b>$(cat description)</b></p>" | cat - haikus > temp && mv temp haikus
 
 		# blog the haikus to blogger
 		google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
