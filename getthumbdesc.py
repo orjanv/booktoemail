@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import json, requests, sys, os
 
+DEBUG = '0'
+
 def GoogleBooks(_title, _author):
 	user_agent = 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0'
 	results = requests.get("https://www.googleapis.com/books/v1/volumes", 
@@ -20,9 +22,10 @@ def GoogleBooks(_title, _author):
 	print thumbnail
 	print description.encode('utf-8')
 
-	file = open('pretty.json','w+')
-	file.write(json.dumps(data, sort_keys=True, indent=4))
-	file.close()
+	if DEBUG != '0':
+		file = open('pretty.json','w+')
+		file.write(json.dumps(data, sort_keys=True, indent=4))
+		file.close()
 
 def main():
 	try:
