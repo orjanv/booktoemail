@@ -30,9 +30,7 @@ def GoogleBooks(query, _author):
 	# find where volumeInfo > authors matches _author
 	# loop through the items in the first json
 	for book in data['items']:
-		#~ try:
 		if book[u'volumeInfo'][u'authors'][0] == _author:
-			#~ print "we have a match:", _author, "and", book[u'volumeInfo'][u'authors'][0]
 			user_agent = 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0'
 			results = requests.get(book.get('selfLink'), headers={'User-Agent': user_agent})
 			newdata = results.json()
@@ -60,7 +58,6 @@ def GoogleBooks(query, _author):
 			print description.encode('utf-8')
 
 			break
-		#~ except KeyError: pass
 
 def main():
 	try:
