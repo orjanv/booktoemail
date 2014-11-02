@@ -2,7 +2,7 @@
 import json, requests, sys, os
 
 # Set to 1 to print out the json in pretty format, for debugging
-#~ DEBUG = '1'
+DEBUG = '0'
 
 def GoogleBooks(query, _author):
 	user_agent = 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0'
@@ -23,9 +23,10 @@ def GoogleBooks(query, _author):
 	selflink = ''
 	newdata = ''
 
-	file = open('pretty.json','w+')
-	file.write(json.dumps(data, sort_keys=True, indent=4))
-	file.close()
+	if DEBUG == '1':
+		file = open('pretty.json','w+')
+		file.write(json.dumps(data, sort_keys=True, indent=4))
+		file.close()
 
 	# find where volumeInfo > authors matches _author
 	# loop through the items in the first json
@@ -35,9 +36,10 @@ def GoogleBooks(query, _author):
 			results = requests.get(book.get('selfLink'), headers={'User-Agent': user_agent})
 			newdata = results.json()
 			
-			file = open('pretty-new.json','w+')
-			file.write(json.dumps(newdata, sort_keys=True, indent=4))
-			file.close()
+			if DEBUG == '1':
+				file = open('pretty-new.json','w+')
+				file.write(json.dumps(newdata, sort_keys=True, indent=4))
+				file.close()
 			
 			try:
 				thumbnail = newdata[u'volumeInfo'][u'imageLinks'][u'thumbnail']
