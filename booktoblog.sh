@@ -25,14 +25,16 @@ then
 	# setting some variables
 	AUTHOR=$(grep "Author:" book | sed 's/Author: //g' | strings)
 	TITLE=$(grep "Title:" book | sed 's/Title: //g' | strings)
-	echo $TITLE
+	echo $TITLE $AUTHOR
 	FOLDER=$(echo $TITLE-by-$AUTHOR | sed 's/ /_/g')
 
 	# find cover from google books, using a python script
-	python getthumbdesc.py $TITLE $AUTHOR > thumb_desc
-	head -1 thumb_desc > image_url
-	sed -n '2,$p' <thumb_desc > description
-	rm thumb_desc
+	python getmetadata.py "$TITLE" "$AUTHOR" > temp
+	head -1 temp > thumbnail
+	sed -n '2p' < temp > categories
+	sed -n '3p' < temp > pagecount
+	sed -n '4,$p' < temp > description
+	#rm temp
 
 	# run it through findhaikus program
 	/usr/local/bin/findhaikus book > haikus
@@ -45,16 +47,16 @@ then
  		sed -i 's/()//g' haikus
 
 		# insert image into blogentry
-		echo "<img src='$(cat image_url)' align='right'><p><b>$(cat description)</b></p><ul><li>Download the epub for free a href='http://www.gutenberg.org/ebooks/$(head -1 $_file).epub.noimages'>here</a></li><li>Download the book in raw text for free a href='http://www.gutenberg.org/ebooks/$(head -1 $_file).txt.utf-8/'>here</a></li></ul>" | cat - haikus > temp && mv temp haikus
+		echo "<img src='$(cat thumbnail)' align='right'><p>From a book categorized as $(cat categories) and $(cat pagecount) pages follows a description and a number of hidden haikus found in the book:</p><p><i>$(cat description)</i></p><ul><li>Download the epub for free <a href='http://www.gutenberg.org/ebooks/$(head -1 $_file).epub.noimages'>here</a></li><li>Download the book in raw text for free <a href='http://www.gutenberg.org/files/$(head -1 $_file)/$(head -1 $_file).txt'>here</a></li></ul>" | cat - haikus > temp && mv temp haikus
 
 		# blog the haikus to blogger
 		google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
-		echo "posted on blogger"
+		#echo "posted on blogger"
 	else
 		echo "no haikus found"
 		# remove book id from file, create folder for book and move away all files
 		mkdir $FOLDER
-		mv -t $FOLDER book haikus image_url
+		mv -t $FOLDER book haikus thumbnail categories pagecount description
 		sed -i '1d' $_file
 		# run the script again if no haikus found
 		booktoblog.sh $_file 
@@ -62,11 +64,10 @@ then
 	fi
 	# remove book id from file, create folder for book and move away all files
 	mkdir $FOLDER
-	mv -t $FOLDER book haikus image_url description
+	mv -t $FOLDER book haikus thumbnail categories pagecount description
 	sed -i '1d' $_file
 	exit 1
 else
 	echo "$_file is empty."
 	exit 1
 fi
-
