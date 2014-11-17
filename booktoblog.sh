@@ -59,7 +59,7 @@ then
 		mv -t $FOLDER book haikus thumbnail categories pagecount description
 		sed -i '1d' $_file
 		# run the script again if no haikus found
-		booktoblog.sh $_file 
+		./booktoblog.sh $_file 
 		exit 1
 	fi
 	# remove book id from file, create folder for book and move away all files
