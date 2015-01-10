@@ -30,7 +30,8 @@ then
 
 	# find cover from google books, using a python script
 	python getmetadata.py "$TITLE" "$AUTHOR" > temp
-	head -1 temp > thumbnail
+	#head -1 temp > thumbnail
+	echo "http://www.gutenberg.org/cache/epub/$_id/pg$_id.cover.medium.jpg" > thumbnail
 	sed -n '2p' < temp > categories
 	sed -n '3p' < temp > pagecount
 	sed -n '4,$p' < temp > description
@@ -46,8 +47,8 @@ then
 		# replace () in haikus file with empty lines
  		sed -i 's/()//g' haikus
 
-		# insert image into blogentry
-		echo "<img src='$(cat thumbnail)' align='right'><p>From a book categorized as $(cat categories) and $(cat pagecount) pages follows a description and a number of hidden haikus found in the book:</p><p><i>$(cat description)</i></p><ul><li>Download the epub for free <a href='http://www.gutenberg.org/ebooks/$(head -1 $_file).epub.noimages'>here</a></li><li>Download the book in raw text for free <a href='http://www.gutenberg.org/files/$(head -1 $_file)/$(head -1 $_file).txt'>here</a></li></ul>" | cat - haikus > temp && mv temp haikus
+		# insert image into blogentry, Changed as of january 2015 to use gutenberg covers instead
+		echo "<img src='http://www.gutenberg.org/cache/epub/$_id/pg$_id.cover.medium.jpg' align='right'><p>From a book categorized as $(cat categories) and $(cat pagecount) pages follows a description and a number of hidden haikus found in the book:</p><p><i>$(cat description)</i></p><ul><li>Download the epub for free <a href='http://www.gutenberg.org/ebooks/$(head -1 $_file).epub.noimages'>here</a></li><li>Download the book in raw text for free <a href='http://www.gutenberg.org/files/$(head -1 $_file)/$(head -1 $_file).txt'>here</a></li></ul>" | cat - haikus > temp && mv temp haikus
 
 		# blog the haikus to blogger
 		google blogger post --tags "haiku" --title "Haikus from $TITLE by $AUTHOR" --src haikus
